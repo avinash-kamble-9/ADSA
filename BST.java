@@ -75,7 +75,7 @@ class BST {
     }
 }
 
-public class BSTUserInput {
+public class BST {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
         BST tree = new BST();
