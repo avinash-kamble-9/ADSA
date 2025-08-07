@@ -1,100 +1,104 @@
-import java.util.*;
+import java.util.Scanner;
 
 class Node {
     int data;
     Node left, right;
 
-    Node(int data) {
-        this.data = data;
+    public Node(int item) {
+        data = item;
         left = right = null;
     }
 }
 
-public class BinaryTreeTraversal {
+class BST {
     Node root;
 
-    BinaryTreeTraversal() {
+    BST() {
         root = null;
     }
 
-    // Inorder traversal: Left -> Root -> Right
-    void inorder(Node node) {
-        if (node == null) return;
-
-        inorder(node.left);
-        System.out.print(node.data + " ");
-        inorder(node.right);
+    void insert(int key) {
+        root = insertRec(root, key);
     }
 
-    // Preorder traversal: Root -> Left -> Right
-    void preorder(Node node) {
-        if (node == null) return;
-
-        System.out.print(node.data + " ");
-        preorder(node.left);
-        preorder(node.right);
-    }
-
-    // Postorder traversal: Left -> Right -> Root
-    void postorder(Node node) {
-        if (node == null) return;
-
-        postorder(node.left);
-        postorder(node.right);
-        System.out.print(node.data + " ");
-    }
-
-    // Build tree from user input (level order), -1 means no child
-    void buildTreeFromInput() {
-        Scanner sc = new Scanner(System.in);
-
-        System.out.println("Enter root node value:");
-        int rootVal = sc.nextInt();
-        if (rootVal == -1) {
-            root = null;
-            return;
+    Node insertRec(Node root, int key) {
+        if (root == null) {
+            root = new Node(key);
+            return root;
         }
 
-        root = new Node(rootVal);
-        Queue<Node> queue = new LinkedList<>();
-        queue.add(root);
+        if (key < root.data)
+            root.left = insertRec(root.left, key);
+        else if (key > root.data)
+            root.right = insertRec(root.right, key);
 
-        while (!queue.isEmpty()) {
-            Node current = queue.poll();
+        return root;
+    }
 
-            System.out.println("Enter left child of " + current.data + " (-1 for no child):");
-            int leftVal = sc.nextInt();
-            if (leftVal != -1) {
-                current.left = new Node(leftVal);
-                queue.add(current.left);
-            }
+    void preorder() {
+        preorderRec(root);
+        System.out.println();
+    }
 
-            System.out.println("Enter right child of " + current.data + " (-1 for no child):");
-            int rightVal = sc.nextInt();
-            if (rightVal != -1) {
-                current.right = new Node(rightVal);
-                queue.add(current.right);
-            }
+    void preorderRec(Node root) {
+        if (root != null) {
+            System.out.print(root.data + " ");
+            preorderRec(root.left);
+            preorderRec(root.right);
         }
     }
 
-    public static void main(String[] args) {
-        BinaryTreeTraversal tree = new BinaryTreeTraversal();
-
-        tree.buildTreeFromInput();
-
-        System.out.print("Inorder traversal: ");
-        tree.inorder(tree.root);
+    void inorder() {
+        inorderRec(root);
         System.out.println();
+    }
 
-        System.out.print("Preorder traversal: ");
-        tree.preorder(tree.root);
-        System.out.println();
+    void inorderRec(Node root) {
+        if (root != null) {
+            inorderRec(root.left);
+            System.out.print(root.data + " ");
+            inorderRec(root.right);
+        }
+    }
 
-        System.out.print("Postorder traversal: ");
-        tree.postorder(tree.root);
+    void postorder() {
+        postorderRec(root);
         System.out.println();
+    }
+
+    void postorderRec(Node root) {
+        if (root != null) {
+            postorderRec(root.left);
+            postorderRec(root.right);
+            System.out.print(root.data + " ");
+        }
     }
 }
 
+public class BSTUserInput {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        BST tree = new BST();
+
+        System.out.println("Enter number of nodes to insert:");
+        int n = sc.nextInt();
+
+        System.out.println("Enter " + n + " values to insert into the BST:");
+        for (int i = 0; i < n; i++) {
+            int val = sc.nextInt();
+            tree.insert(val);
+        }
+
+        System.out.println("Preorder traversal:");
+        tree.preorder();
+
+        System.out.println("Inorder traversal:");
+        tree.inorder();
+
+        System.out.println("Postorder traversal:");
+        tree.postorder();
+
+        sc.close();
+    }
+}
 
