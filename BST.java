@@ -10,10 +10,10 @@ class Node {
     }
 }
 
-class BST {
+class BSTt {
     Node root;
 
-    BST() {
+    BSTt() {
         root = null;
     }
 
@@ -78,7 +78,7 @@ class BST {
 public class BST {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
-        BST tree = new BST();
+        BSTt tree = new BSTt();
 
         System.out.println("Enter number of nodes to insert:");
         int n = sc.nextInt();
