@@ -1,5 +1,0 @@
-Enter number of elements: 9
-Enter 9 elements:
-12 34 23 99 1 45 12 65 27
-Sorted array:
-1 12 12 23 27 34 45 65 99 
