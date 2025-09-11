@@ -1,0 +1,50 @@
+from collections import deque
+
+# BFS function
+def bfs(graph, start):
+    visited = set()        # To keep track of visited nodes
+    queue = deque()        # Initialize queue
+
+    # Enqueue the start node
+    queue.append(start)
+    visited.add(start)
+
+    print("BFS Traversal:", end=" ")
+
+    while queue:
+        # Dequeue operation
+        vertex = queue.popleft()
+        print(vertex, end=" ")
+
+        # Enqueue unvisited neighbors
+        for neighbor in graph[vertex]:
+            if neighbor not in visited:
+                visited.add(neighbor)
+                queue.append(neighbor)
+
+# Main function to take input and call BFS
+def main():
+    graph = {}
+    n = int(input("Enter number of nodes: "))  
+
+    # Take adjacency list input from user
+    for i in range(n):
+        neighbors = list(map(int, input(f"Enter neighbors of node {i} (space separated): ").split()))
+        graph[i] = neighbors
+
+    start = int(input("Enter starting node: "))
+    bfs(graph, start)
+
+# Run the program
+if __name__ == "__main__":
+    main()
+
+Output 
+Enter number of nodes: 4
+Enter neighbors of node 0 (space separated): 1 2
+Enter neighbors of node 1 (space separated): 0 3
+Enter neighbors of node 2 (space separated): 0 3
+Enter neighbors of node 3 (space separated): 1 2
+Enter starting node: 0
+
+BFS Traversal: 0 1 2 3
