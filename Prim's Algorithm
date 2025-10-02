@@ -1,0 +1,81 @@
+import heapq  # for priority queue (min-heap)
+
+def prims_algorithm(graph, start=0):
+    """
+    Prim's Algorithm to find Minimum Spanning Tree (MST)
+    
+    Parameters:
+    graph: dict, adjacency list representation {node: [(weight, neighbor), ...]}
+    start: int, starting node for MST
+
+    Returns:
+    mst_cost: int, total weight of MST
+    mst_edges: list of tuples, edges in MST (parent, node, weight)
+    """
+    visited = set()  # keep track of nodes already in MST
+    min_heap = [(0, start, -1)]  # (weight, node, parent), start node has weight 0
+    mst_cost = 0
+    mst_edges = []
+
+    while min_heap and len(visited) < len(graph):
+        # pop the edge with minimum weight
+        weight, node, parent = heapq.heappop(min_heap)
+
+        # skip if node is already included in MST
+        if node in visited:
+            continue
+
+        visited.add(node)          # mark node as visited
+        mst_cost += weight         # add weight to total MST cost
+
+        if parent != -1:
+            mst_edges.append((parent, node, weight))  # add edge to MST
+
+        # push all edges from this node to heap if neighbor not visited
+        for edge_weight, neighbor in graph[node]:
+            if neighbor not in visited:
+                heapq.heappush(min_heap, (edge_weight, neighbor, node))
+
+    return mst_cost, mst_edges
+
+
+# ---------------- User Input ----------------
+n = int(input("Enter number of vertices: "))  # number of vertices
+graph = {i: [] for i in range(n)}            # initialize adjacency list
+
+print("Enter adjacency matrix (use 0 if no edge):")
+for i in range(n):
+    row = list(map(int, input().split()))   # input row
+    for j, w in enumerate(row):
+        if w != 0:  # only add edges with weight > 0
+            graph[i].append((w, j))
+
+start_node = int(input("Enter starting node (0 to n-1): "))
+
+# ---------------- Run Prim's Algorithm ----------------
+cost, edges = prims_algorithm(graph, start=start_node)
+
+# ---------------- Output Results ----------------
+print("\nMinimum Spanning Tree Cost:", cost)
+print("Edges in MST:")
+for u, v, w in edges:
+    print(f"{u} - {v} : {w}")
+
+
+
+Enter number of vertices: 4
+Enter adjacency matrix (use 0 if no edge):
+0 1 4 0
+1 0 2 6
+4 2 0 3
+0 6 3 0
+Enter starting node (0 to n-1): 0
+
+
+
+Minimum Spanning Tree Cost: 6
+Edges in MST:
+0 - 1 : 1
+1 - 2 : 2
+2 - 3 : 3
+
